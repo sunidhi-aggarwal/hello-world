@@ -1,0 +1,71 @@
+powershell_script 'Download Tomcat' do
+  #code 'Start-Process "C:\jdk\jdk-8u73-windows-x64.exe" -ArgumentList "/s" -Wait'
+  code <<-EOF
+  $url = "http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.73/bin/apache-tomcat-7.0.73-windows-x64.zip"
+  $output = "C:\apache-tomcat-7.0.73-windows-x64.zip"
+  $Username = "corp\tgautam"
+  $Password = "Capgemini@123"
+  $client = new-object System.Net.WebClient
+  $client.Credentials = New-Object System.Net.Networkcredential($Username, $Password)
+  $client.DownloadFile($url,$output)
+  EOF
+  #code 'Start-Process "#{node['javainstall']['jdkpath']}" -ArgumentList "/s" -Wait'
+  guard_interpreter :powershell_script
+end
+
+powershell_script 'Install JDK' do
+  code <<-EOF
+  setx JAVA_HOME "<C:\Program Files\Java\jdk1.8.0>" 
+  setx PATH "%PATH%;%JAVA_HOME%\bin";
+  EOF
+  guard_interpreter :powershell_script
+end
+
+powershell_script 'Unzip Nginx' do
+code <<-EOF
+$BackUpPath = “C:\nginx-1.10.2.zip”
+$Destination = “C:\recovered”
+Add-Type -assembly “system.io.compression.filesystem”
+[io.compression.zipfile]::ExtractToDirectory($BackUpPath, $destination)
+EOF
+guard_interpreter :powershell_script
+end
+
+
+powershell_script 'Download Nginx' do
+  #code 'Start-Process "C:\recovered\nginx-1.10.2\nginx.exe" -ArgumentList "/s" -Wait'
+  code <<-EOF
+  $proxy = new-object System.Net.WebProxy("http://arlproxy1.igate.com:8080")
+  $Username = "corp\tgautam"
+  $Password = ConvertTo-SecureString "Capgemini@123" -AsPlainText -Force
+  $cred = New-Object System.Management.Automation.PSCredential $Username, $Password 
+  $proxy.credentials = $cred
+  $WebClient = new-object System.Net.WebClient
+  $WebClient.proxy = $proxy
+  $url = "https://nginx.org/download/nginx-1.10.2.zip"
+  $output = "C:\nginx-1.10.2.zip"
+ Try
+ {
+   $content = $WebClient.DownloadFile($url,$output)
+   Write-Host "Opened $url successfully" -ForegroundColor Red
+ }
+ catch
+ {
+   Write-Host "Unable to access $url" -ForegroundColor Yellow 
+ }
+ EOF
+  guard_interpreter :powershell_script
+end
+
+
+
+
+Try
+{
+  $content = $WebClient.DownloadFile($url,$output)
+  Write-Host "Opened $url successfully" -ForegroundColor Red
+}
+catch
+{
+  Write-Host "Unable to access $url" -ForegroundColor Yellow 
+}
