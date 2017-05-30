@@ -1,0 +1,4 @@
+Command for bootstrapping a windows node in local lab
+
+
+knife bootstrap windows winrm 10.207.214.162 --winrm-user Win2k12DC-64\Administrator --winrm-password 'cloud@123' --node-name WindowNode1 --node-ssl-verify-mode none --msi-url C:\chef-client-12.16.42-1-x64.msi  

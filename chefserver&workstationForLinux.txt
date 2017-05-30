@@ -1,0 +1,55 @@
+*********Hosted Chef server***********************
+
+https://api.chef.io/organizations/cgcloud/
+username : cloud-coe
+password : capgemini@123
+Organization to be used : cgcloud
+
+
+*****************Chef Workstation****************
+
+IP : 52.172.180.127
+chefdk download link : https://packages.chef.io/files/stable/chefdk/1.1.16/el/7/chefdk-1.1.16-1.el7.x86_64.rpm
+---List of commands---
+
+      wget https://packages.chef.io/files/stable/chefdk/1.1.16/el/7/chefdk-1.1.16-1.el7.x86_64.rpm
+      rpm -ivh chefdk-1.1.16-1.el7.x86_64.rpm
+      ls -l /opt/chefdk/
+      chef verify
+      ls
+      ll /opt/chefdk/embedded/lib/ruby/gems
+      export GEM_ROOT="/opt/chefdk/embedded/lib/ruby/gems/2.3.0"
+      export GEM_HOME="/root/.chefdk/gem/ruby/2.3.0"
+      export GEM_PATH="/root/.chefdk/gem/ruby/2.3.0:/opt/chefdk/embedded/lib/ruby/gems/2.3.0"
+      chef --version
+      which ruby
+      export PATH="/opt/chefdk/bin:/root/.chefdk/gem/ruby/2.3.0/bin:/opt/chefdk/embedded/bin:/opt/chefdk/bin:/root/.chefdk/gem/ruby/2.3.0/bin:/opt/chefdk/embedded/bin:/opt/chefdk/bin:/root/.chefdk/gem/ruby/2.3.0/bin:/opt/chefdk/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
+      which ruby
+      chef shell-init bash
+      echo 'eval "$(chef shell-init bash)"' >> ~/.bash_profile
+      firewall-cmd --direct  --add-rule ipv4 filter INPUT_direct 0 -i eth0 -p tcp  --dport 443 -j ACCEPT
+      firewall-cmd --direct  --add-rule ipv4 filter INPUT_direct 0 -i eth0 -p tcp  --dport 80 -j ACCEPT
+      firewall-cmd --direct  --add-rule ipv4 filter INPUT_direct 0 -i eth0 -p tcp  --dport 9683 -j ACCEPT
+      firewall-cmd --reload
+      cd /root/
+      cd chef-repo/
+      knife node list
+      iptables
+      service iptables status
+      cd /tmp
+      cd /root/chef-repo/
+      knife node list
+      cd cookbooks/
+      knife cookbook create test
+      ls
+      cd test
+      cd recipes/
+      pwd
+      vim default.rb
+      knife cookbook upload test
+      cd ..
+      cd /
+      cd /root/chef-repo/
+      chef-client -z -o test
+   
+
